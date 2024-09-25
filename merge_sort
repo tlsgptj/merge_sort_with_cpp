@@ -1,25 +1,23 @@
 #include <iostream>
-//네임스페이스(namespace)
 using namespace std;
 
-//두 개의 정렬된 부분 배열 A[1..m]과 A[m+1..h]를 병합하는 함수
 void Merge(int A[], int l, int m, int h) {
-    int n1 = m - 1 + 1; //왼쪽 부분 배열의 크기
-    int n2 = h - m; //오른쪽 부분 배열 크기
-    
-    //임시 배열에 값을 복사
+    int n1 = m - l + 1; // 왼쪽 부분 배열의 크기
+    int n2 = h - m;     // 오른쪽 부분 배열 크기
+
+    // 임시 배열에 값을 복사
     int left[n1], right[n2];
 
     // 왼쪽 배열의 값 복사
     for (int i = 0; i < n1; i++)
-        left[i] = A[1 + i];
+        left[i] = A[l + i];
 
     // 오른쪽 배열의 값 복사
     for (int i = 0; i < n2; i++)
         right[i] = A[m + 1 + i];
 
     // 두 배열의 병합
-    int i = 0, j = 0, k = 1;
+    int i = 0, j = 0, k = l;
     while (i < n1 && j < n2) {
         if (left[i] <= right[j]) {
             A[k] = left[i];
@@ -31,7 +29,7 @@ void Merge(int A[], int l, int m, int h) {
         k++;
     }
 
-    //남은 요소 복사
+    // 남은 요소 복사
     while (i < n1) {
         A[k] = left[i];
         i++;
@@ -44,29 +42,26 @@ void Merge(int A[], int l, int m, int h) {
     }
 }
 
-//Merge Sort 함수, 배열 A[l..h]를 정렬
+// Merge Sort 함수, 배열 A[l..h]를 정렬
 void MS(int A[], int l, int h) {
-    if(l < h) {
-        int m = l + (h - l) / 2; //중간 지점 계산
-        //왼쪽 부분과 오른쪽 부분을 재귀적으로 정렬
-        MS (A, l, m);
-        MS (A, m + 1, h);
-
-        // 두 부분을 병합
-        Merge(A, l, m, h);
+    if (l < h) {
+        int m = l + (h - l) / 2; // 중간 지점 계산
+        MS(A, l, m);              // 왼쪽 절반 정렬
+        MS(A, m + 1, h);          // 오른쪽 절반 정렬
+        Merge(A, l, m, h);        // 병합
     }
 }
 
 int main() {
     int A[] = {3, 2, 5, 7, 4, 8, 6, 9, 1};
-    int n = sizeof(A)/sizeof(A[0]);
+    int n = sizeof(A) / sizeof(A[0]);
 
     cout << "정렬 전 배열: ";
     for (int i = 0; i < n; i++)
         cout << A[i] << " ";
     cout << endl;
 
-    MS(A, 0, n - 1); //배열을 0부터 n-1까지 정렬
+    MS(A, 0, n - 1); // 배열을 0부터 n-1까지 정렬
 
     cout << "정렬 후 배열: ";
     for (int i = 0; i < n; i++)
@@ -74,5 +69,4 @@ int main() {
     cout << endl;
 
     return 0;
-
 }
